@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    </style>
+</head>
+<body>
+    <input type="range" class="range">
+    <input type="range" class="range">
+    <input type="range" id="range">
+    <button id="run">Pobierz pixele</button>
+    <canvas width="600" height="400" id="plotno"></canvas>
+</body>
+<script>
+    let plotno = document.querySelector('#plotno')
+    let btnRun = document.querySelector('#run')
+    let range = document.querySelector('#range')
+    console.log(range)
+    const zdjecie = './img.jpeg'
+    let ctx = plotno.getContext('2d')
+    let img = new Image()
+    img.src = zdjecie
+    img.addEventListener('load', (e)=>{
+        ctx.drawImage(img, 0, 0, plotno.width, plotno.height)
+    })
+   range.addEventListener("change", (e)=>{
+       let imageData = ctx.getImageData(0, 0, plotno.width, plotno.height)
+       console.log(imageData)
+       for(let i = 0; i< imageData.data.length; i+=4){
+           imageData.data[i] = Math.min(255, imageData.data[i]+30)
+           imageData.data[i+1] = Math.min(255, imageData.data[i+1]+30)
+           imageData.data[i+2] = Math.min(255, imageData.data[i+2]+30)
+       }
+       ctx.putImageData(imageData, 0, 0)
+   })
+</script>
+</html>
