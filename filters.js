@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', function(){
     let bright_counter = document.querySelector("#bright-counter")
     let contrast = document.querySelector("#contrast")
     let contrast_counter = document.querySelector("#contrast-counter")
-
-
+    let saturation = document.querySelector("#saturation")
+    let saturation1 = document.querySelector("#saturation1")
+    let saturation2 = document.querySelector("#saturation2")
+    let saturation_counter = document.querySelector("#saturation-counter")
     
     console.log(negatyw)
     const zdjecie = './img.jpeg'
@@ -64,12 +66,30 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         ctx.putImageData(imageData, 0, 0)
     })
-    
 
+
+     /// NASYCENIE
+     saturation.addEventListener("input", (e)=>{
+        console.log(ctx.fillStyle)
+        saturation_counter.innerHTML = `hsl(${saturation.value}, ${saturation1.value}%, ${saturation2.value}%)`
+        ctx.globalCompositeOperation = "saturation"
+        ctx.fillStyle = `hsl(${e.target.value},${saturation1.value}%,${saturation2.value}%)`
+        ctx.fillRect(0,0,plotno.width,plotno.height)
+    })
+     saturation1.addEventListener("input", (e)=>{
+        saturation_counter.innerHTML = `hsl(${saturation.value}, ${saturation1.value}%, ${saturation2.value}%)`
+        ctx.globalCompositeOperation = "saturation"
+        ctx.fillStyle = `hsl(${saturation.value},${e.target.value}%,${saturation2.value}%)`
+        ctx.fillRect(0,0,plotno.width,plotno.height)
+    })
+     saturation2.addEventListener("input", (e)=>{
+        saturation_counter.innerHTML = `hsl(${saturation.value}, ${saturation1.value}%, ${saturation2.value}%)`
+        ctx.globalCompositeOperation = "saturation"
+        ctx.fillStyle = `hsl(${saturation.value},${saturation2.value}%,${e.target.value}%)`
+        ctx.fillRect(0,0,plotno.width,plotno.height)
+    })
 
                             //////////////FILTRY
-
-
 
     //NEGATYW
     negatyw.addEventListener("click", (e)=>{
@@ -91,8 +111,6 @@ document.addEventListener('DOMContentLoaded', function(){
             imageData.data[i + 2] = avg
         }
         ctx.putImageData(imageData, 0, 0);
-    })
-
-    
+    }) 
 })
 
