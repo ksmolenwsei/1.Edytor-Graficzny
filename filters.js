@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
     let negatyw = document.querySelector('#negatyw')
     let black = document.querySelector("#black")
-
     let bright = document.querySelector("#bright")
     let bright_counter = document.querySelector("#bright-counter")
+    let contrast = document.querySelector("#contrast")
+    let contrast_counter = document.querySelector("#contrast-counter")
 
 
     
@@ -37,7 +38,32 @@ document.addEventListener('DOMContentLoaded', function(){
 
         ctx.putImageData(imageData, 0, 0)
     })
-    
+    //KONTRAST
+
+    function truncateColor(value) {
+        if (value < 0) {
+          value = 0;
+        } else if (value > 255) {
+          value = 255;
+        }
+      
+        return value;
+      }
+
+    contrast.addEventListener("input", (e)=>{
+        redraw()
+        let imageData = ctx.getImageData(0, 0, plotno.width, plotno.height)
+        
+        let value = (e.target.value)
+        contrast_counter.innerHTML = value
+        let factor = ((259.0 * (value + 255.0)) / (255.0 * (259.0 - value)))/10
+        for (let i = 0; i < imageData.data.length; i+=4) {
+            imageData.data[i] = truncateColor(factor * (imageData.data[i] - 128.0) + 128.0)
+            imageData.data[i+1] = truncateColor(factor * (imageData.data[i+1] - 128.0) + 128.0)
+            imageData.data[i+2] = truncateColor(factor * (imageData.data[i+2] - 128.0) + 128.0)
+        }
+        ctx.putImageData(imageData, 0, 0)
+    })
     
 
 
@@ -48,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function(){
     //NEGATYW
     negatyw.addEventListener("click", (e)=>{
         let imageData = ctx.getImageData(0, 0, plotno.width, plotno.height)
-        console.log(imageData)
         for(let i = 0; i< imageData.data.length; i+=4){
                 imageData.data[i]   = imageData.data[i]^255
                 imageData.data[i+1] = imageData.data[i+1]^255
@@ -67,5 +92,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
         ctx.putImageData(imageData, 0, 0);
     })
+
+    
 })
 
